@@ -1,15 +1,16 @@
 /* ************ général *********** */
 
+/* on définit une grille sur le body pour le desktop */
 body {
   display: grid;
   margin: 0;
   text-align: center;
   grid-template-columns: 35vw 1fr;
-  grid-template-rows: 60vh 15vh 140vh repeat(5, max-content) 30vh;
+  grid-template-rows: 60vh 15vh 140vh repeat(5, auto) 30vh;
   grid-template-areas:
     "header header"
     "nav nav"
-    "headline headline"
+    "bali bali"
     "aside articlesIntro"
     "aside article1"
     "aside article2"
@@ -138,10 +139,10 @@ nav {
 
 /* ************ section (à la une) *********** */
 
-#headline {
-  grid-area: headline;
+#bali {
+  grid-area: bali;
   display: grid;
-  grid-template-columns: 5vw repeat(4, 1fr);
+  grid-template-columns: 5vw 1fr 3fr;
   grid-template-rows: repeat(3, 1fr);
   background-image: linear-gradient(
       rgba(116, 230, 214, 0.4),
@@ -155,9 +156,8 @@ nav {
   filter: contrast(120%);
 }
 
-#bali {
+#rectangleBali {
   border-radius: 20px;
-  display: grid;
   grid-row: 2;
   grid-column: 2;
   background-color: #2b80b9;
@@ -165,8 +165,9 @@ nav {
   margin: 1em 1em;
 }
 
-#bali h1 {
+#rectangleBali h2 {
   margin-top: -1vw;
+  font-size: 2em;
 }
 
 /* ************ aside (les + populaires) *********** */
@@ -221,10 +222,6 @@ aside h3 {
 
 /* ************ derniers articles *********** */
 
-article {
-  display: grid;
-}
-
 article h2 {
   color: #2b80b9;
 }
@@ -235,12 +232,6 @@ article img:hover {
 
 #articlesIntro i {
   color: #2b80b9;
-}
-
-.articlesIntroImages {
-  justify-content: space-around;
-  align-items: center;
-  flex-wrap: wrap;
 }
 
 .articlesIntroImage {
@@ -274,7 +265,6 @@ article {
 
 article:after {
   color: white;
-  display: block;
   height: 2px;
   background-color: #2b80b9;
   width: 50em;
@@ -293,10 +283,12 @@ article p {
 
 /* ************ partenaires *********** */
 
+/* on applique une grille sur cette section pour la couper en deux
+(avion + compagnies) : 1 colonne et 2 rangées */
 #partners {
   grid-area: partners;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   grid-template-rows: 2fr 1fr;
 }
 
@@ -309,7 +301,6 @@ article p {
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-  grid-column: span 3;
   grid-row: 1;
   color: #2b80b9;
 }
@@ -333,14 +324,15 @@ article p {
   transition: 0.5s;
 }
 
+/* on applique une grille sur les compagnies pour diviser cette partie
+en 3 cases => 3 colonnes identiques et une seule rangée (inutile de préciser
+le grid-template-rows dans ce cas-là) */
 #companies {
   background-color: #2b80b9;
   color: white;
-  grid-column: span 3;
   grid-row: 2;
   display: grid;
   grid-template-columns: repeat(3, auto);
-  grid-template-rows: auto;
   place-items: center center;
 }
 
@@ -379,23 +371,26 @@ footer li i:hover {
   transform: scale(1.2);
 }
 
-/* ************ media queries *********** */
+/* ********************* MEDIA QUERIES ************************ */
 
-/* 1) règles communes aux mobiles + tablettes */
+/*********** 1) règles communes aux mobiles + tablettes *********/
 
 @media screen and (max-width: 991px) {
   #hamburger {
+    /* on fait apparaître l'icone hamburger */
     color: #2b80b9;
     display: block;
     text-align: left;
     margin: 20px 20px;
   }
 
+    /* on fait apparaître le logo et le titre */
   #navbarTitle {
     display: block;
     margin: 20px 40px;
   }
 
+  /* on aligne hamburger et div logo + titre */
   #hamburgerAndTitle {
     display: flex;
     justify-content: center;
@@ -408,6 +403,8 @@ footer li i:hover {
   }
 
   nav {
+    /* on "colle" la navbar en haut de l'écran et on la dispose en 
+    colonne avec flexbox */
     width: 100vw;
     z-index: 1;
     position: fixed;
@@ -424,7 +421,8 @@ footer li i:hover {
     padding-bottom: 20px;
   }
 
-  #headline {
+  #bali {
+    /* on redéfinit la grille de la partie "bali" */
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(4, 1fr);
@@ -438,7 +436,9 @@ footer li i:hover {
     background-attachment: unset;
   }
 
-  #bali {
+  /* on redéfinit la place du rectangle bleu dans la partie "bali"
+  => il est maintenant en position centre-gauche */
+  #rectangleBali {
     grid-row: 3;
     grid-column: 2;
   }
@@ -448,15 +448,63 @@ footer li i:hover {
   }
 }
 
-/* 2) mobiles uniquement */
+/*************** 2) tablettes uniquement *********************/
+
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  body {
+    /* on redéfinit la grille => la nav disparaît (elle est maintenant
+    fixée en haut */
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 40vh 100vh auto;
+    grid-template-areas:
+      "header header"
+      "bali bali"
+      "aside articlesIntro"
+      "aside article1"
+      "aside article2"
+      "aside article3"
+      "partners partners"
+      "footer footer";
+  }
+
+  .topdestinations {
+    margin-bottom: 2em;
+  }
+
+  .topdestinationspictures,
+  .articlesIntroImage {
+    width: 30vw;
+    height: auto;
+  }
+
+  .articleimage {
+    width: 40vw;
+    height: auto;
+  }
+
+  aside {
+    display: grid;
+  }
+
+  article {
+    grid-template-columns: 50vw;
+    padding: 1em;
+    margin: auto;
+  }
+}
+
+/********************* 3) mobiles uniquement ***************/
 
 @media screen and (max-width: 767px) {
   body {
+    /* on redéfinit la grille => 
+    - une seule colonne
+    - la partie "les plus populaires" (aside) passe après les articles */
     grid-template-columns: 100vw;
     grid-template-rows: 50vh 100vh auto;
     grid-template-areas:
       "header"
-      "headline"
+      "bali"
       "articlesIntro"
       "article1"
       "article2"
@@ -504,7 +552,6 @@ footer li i:hover {
   }
 
   #partners {
-    grid-area: partners;
     display: grid;
     grid-template-columns: 100vw;
     grid-template-rows: 50vh auto;
@@ -512,58 +559,10 @@ footer li i:hover {
 
   #partners img {
     width: 40vw;
-    transition: 0.5s;
   }
 
   #companies {
     display: grid;
     grid-template-columns: auto;
-  }
-}
-
-/* 3) tablettes uniquement */
-
-@media screen and (min-width: 768px) and (max-width: 991px) {
-  body {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 40vh 100vh auto;
-    grid-template-areas:
-      "header header"
-      "headline headline"
-      "aside articlesIntro"
-      "aside article1"
-      "aside article2"
-      "aside article3"
-      "partners partners"
-      "footer footer";
-  }
-
-  #headline {
-    background-attachment: fixed;
-  }
-
-  .topdestinations {
-    margin-bottom: 2em;
-  }
-
-  .topdestinationspictures,
-  .articlesIntroImage {
-    width: 30vw;
-    height: auto;
-  }
-
-  .articleimage {
-    width: 40vw;
-    height: auto;
-  }
-
-  aside {
-    display: grid;
-  }
-
-  article {
-    grid-template-columns: 50vw;
-    padding: 1em;
-    margin: auto;
   }
 }
